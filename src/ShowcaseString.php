@@ -42,8 +42,12 @@ class ShowcaseString {
 
             // If the character is a closing bracket, check if it matches the top of the stack
             elseif (in_array($char, [')', ']', '}'])) {
+                if(empty($stack)) {
+                    return false;
+                }
+
                 // If the stack is empty or the top of the stack doesn't match the closing bracker, return false
-                if(empty($stack) || !self::doBracketsMatch(array_pop($stack), $char)) {
+                if(!static::doBracketsMatch(array_pop($stack), $char)) {
                     return false;
                 }
             }
@@ -62,13 +66,7 @@ class ShowcaseString {
      */
     public static function reverse(string $str): string
     {
-        $stack = []; // The stack to keep track of the characters
-
-        for($i = strlen($str); $i > 0; $i--) {
-            $stack[] = $str[$i];
-        }
-
-        return implode('', $stack);
+        return implode('', array_reverse(str_split($str)));
     }
 
     /**
