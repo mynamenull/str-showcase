@@ -1,6 +1,6 @@
 <?php
 
-namespace MyNameNull\StrShowcase\Tests\Unit;
+namespace MyNameNull\Showcase\Str\Tests\Unit;
 
 use MyNameNull\Showcase\Str\ShowcaseString;
 use PHPUnit\Framework\TestCase;
