@@ -3,6 +3,11 @@
 namespace MyNameNull\Showcase\Str;
 
 
+/**
+ * A class with functions regarding possible PHP job interview questions regarding string manipulation
+ *
+ * @author mynamenull <hi@null.tf>
+ */
 class ShowcaseString {
 
     /**
@@ -193,15 +198,130 @@ class ShowcaseString {
     }
     
     /**
-     * @WIP
+     * Checks whether the $str is an anagram of $of
      *
-     * - add replace substring
-     * - add string compression
-     * - add anagram check
-     * - add word frequency
-     * - add truncate string
+     * @param string $str - the string to check against $of
+     * $param string $of - the string to check against $str
      *
-     * - add tests / make sure tests succeed
+     * @return bool
      */
+    public static function isAnagram(string $str, string $of): bool
+    {
+        return count(array_diff_assoc(str_split($str), str_split($str))) === 0;
+    }
+
+    /**
+     * Get an assoc array of words with the frequency used as value
+     *
+     * @param string $paragraph - the string to check the word frequency
+     *
+     * @return array - assoc array of words with the frequency count
+     */
+    public static function getWordFrequency(string $paragraph): array
+    {
+        $stack = [];
+        $words = explode(' ', $paragraph);
+
+        for($i = 0; $i < count($words); $i++) {
+            // make sure the string is lowercase to match same words
+            $word = strtolower($words[$i]);
+
+            // remove redundant characters
+            $word = preg_replace('/[^a-zA-Z0-9]/i', '', $word);
+
+            if(array_key_exists($word, $stack)) {
+                $stack[$word]++;
+            } else {
+                $stack[$word] = 1;
+            }
+        }
+
+        return $stack;
+    }
+
+    /**
+     * Truncate a given string to a specific length ending with '...'
+     *
+     * @param string $str - the string to truncate
+     * @param int $length - the length to be truncated to
+     *
+     * @return string - the truncated string
+     */
+    public static function truncate(string $str, int $length = 12): string
+    {
+        $l = strlen($str);
+
+        // If the $str is less then $length return the $str directly
+        if($l <= $length) {
+            return $str;
+        }
+
+        return substr($str, 0, $length) . "...";
+    }
+
+    /**
+     * Compresses a string with character frequency
+     *
+     * @param string $str - the string to compress
+     *
+     * @return string - the compressed string
+     */
+    public static function compress(string $str): string
+    {
+        $stack = [];
+        // Split all characters into an array
+        $spl = str_split($str);
+
+        // Loop through each character and store it in stack, if it already exists add to the count
+        for($i = 0; $i < strlen($str); $i++) {
+            $char = $spl[$i];
+
+            if(array_key_exists($char, $stack)) {
+                $stack[$char]++;
+            } else {
+                $stack[$char] = 1;
+            }
+        }
+
+        // Construct the string with the character and the frequency
+        $result = '';
+        foreach($stack as $ch => $freq) {
+            $result .= $ch . $freq;
+        }
+
+        // If the compressed string is bigger then the original stirng, return the original string
+        if(strlen($result) >= strlen($str)) {
+            return $str;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Replaces $search in the source string with substr
+     *
+     * @param string $str - the string where the replacement is taking place
+     * @param string $search - the string to search for in $str
+     * @param string $replacement - the string to replace $search with
+     *
+     * @return string - the replaced string, if no search is found original will be returned
+     */
+    public static function replaceSubstring(string $str, string $search, string $replacement): string
+    {
+        // Get the position of the $search
+        $pos = strpos($str, $search);
+
+        // If the $search is not found return the original string
+        if($pos === false) {
+            return $str;
+        }
+
+        // Get the parts before and after the substring
+        $pf = substr($str, 0, $pos);
+        $af = substr($str, $pos + strlen($search));
+
+        // Construct the string with the replacement
+        return $pf . $replacement . $af;
+    }
 
 }
